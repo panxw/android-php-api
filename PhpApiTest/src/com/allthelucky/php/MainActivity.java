@@ -16,7 +16,7 @@ import com.app.library.http.RequestManager;
  * 
  */
 public class MainActivity extends Activity {
-	private static final String API_URL = "http://www.youth168.com/php_test2.php";
+	private static final String API_URL = "http://www.youth168.com/php_api.php";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +37,8 @@ public class MainActivity extends Activity {
 			info.put("password", "e10adc3949ba59abbe56e057f20f883e");
 			info.put("type", "1");
 
-			params.put("info", info);
-			params.put("action", "add_user");
+			params.put("information", info);
+			params.put("service", "add_user");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -50,8 +50,13 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onCompleted(byte[] data, int statusCode, String description, int actionId) {
-				String result = new String(data);
-				System.out.println("result:" + result);
+				if(data!=null) {
+					String result = new String(data);
+					System.out.println("result:" + result);
+				} else {
+					System.out.println("error");
+				}
+				
 			}
 		};
 		RequestManager.getInstance().post(this, API_URL, params, requestListener, 0);
