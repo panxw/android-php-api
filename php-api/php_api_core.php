@@ -11,7 +11,7 @@ class PHPApi {
 	}
 
 	public function execute() {//execute api according input information
-		$conn = mysql_connect ( "localhost", "s549974db0", "7337zxtz" ) or die ( "error" . mysql_error () ); 
+		$conn = mysql_connect ( "localhost", "s549974db0", "7337zxtz" ) or die ( "error" . mysql_error () );
 		mysql_select_db ( "s549974db0", $conn ) or die ( "select db error" );//mysql_query("use s549974db0",$conn);
 		mysql_query ( "set names utf-8" );
 
@@ -55,36 +55,25 @@ class PHPApi {
 
 	private function add_user($conn ) {//add new user to database
 		$sql = mysql_query ( "insert into user(username,password,type) values('" . $this->information->username . "','" . $this->information->password . "'," . $this->information->type . ")", $conn );
-		if ($sql) {
-			$this->set_sucess ( $this->service );
-			mysql_free_result ( $sql );
-		} else {
-			$this->set_error ();
-		}
+		$this->free_sql($sql);
 	}
 
 	private function delete_user($conn ) {//del certain user from database
 		$sql=mysql_query("delete from user where id=".$this->information->id);
-		if ($sql) {
-			$this->set_sucess ( $this->service );
-			mysql_free_result ( $sql );
-		} else {
-			$this->set_error ();
-		}
+		$this->free_sql($sql);
 	}
 
 	private function update_user($conn ) {//update certain user to database
 		$sql=mysql_query("update user set username='".$this->information->username."', type='".$this->information->type."' where id=".$this->information->type);
-		if ($sql) {
-			$this->set_sucess ( $this->service );
-			mysql_free_result ( $sql );
-		} else {
-			$this->set_error ();
-		}
+		$this->free_sql($sql);
 	}
 
 	private function query_user($conn ) {//query user by type
 		$sql=mysql_query("select * from user where type='".$this->information->type."'", $conn);
+		$this->free_sql($sql);
+	}
+
+	private function  free_sql($sql) {//free sql
 		if ($sql) {
 			$this->set_sucess ( $this->service );
 			mysql_free_result ( $sql );
