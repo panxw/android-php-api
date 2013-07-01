@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.app.library.http.RequestListener;
 import com.app.library.http.RequestManager;
@@ -23,13 +24,14 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		requestApiTest();
+		requestAdd();
+		requestList();
 	}
 
 	/**
-	 * JSONObject方式请求
+	 * 创建用户
 	 */
-	private void requestApiTest() {
+	private void requestAdd() {
 		final JSONObject params = new JSONObject();
 		try {
 			final JSONObject info = new JSONObject();
@@ -42,24 +44,41 @@ public class MainActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
-		final RequestListener requestListener = new RequestListener() {
-			@Override
-			public void onStart() {
-			}
-
-			@Override
-			public void onCompleted(byte[] data, int statusCode, String description, int actionId) {
-				if(data!=null) {
-					String result = new String(data);
-					System.out.println("result:" + result);
-				} else {
-					System.out.println("error");
-				}
-				
-			}
-		};
 		RequestManager.getInstance().post(this, API_URL, params, requestListener, 0);
 	}
+
+	/**
+	 * 请求用户列表
+	 */
+	private void requestList() {
+		final JSONObject params = new JSONObject();
+		try {
+			final JSONObject info = new JSONObject();
+			info.put("count", "1");
+			params.put("information", info);
+			params.put("service", "show_list");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		RequestManager.getInstance().post(this, API_URL, params, requestListener, 0);
+	}
+
+	final RequestListener requestListener = new RequestListener() {
+		@Override
+		public void onStart() {
+		}
+
+		@Override
+		public void onCompleted(byte[] data, int statusCode, String description, int actionId) {
+			String result = null;
+			if (data != null) {
+				result = new String(data);
+				System.out.println("result:" + result);
+			} else {
+				System.out.println("error");
+			}
+			((TextView) findViewById(R.id.tv)).setText("result:\n" + result);
+		}
+	};
 
 }
