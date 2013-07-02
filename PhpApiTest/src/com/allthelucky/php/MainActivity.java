@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
 			info.put("type", "1");
 
 			params.put("information", info);
-			params.put("service", "add_user");
+			params.put("service", "create_user");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
 			final JSONObject info = new JSONObject();
 			info.put("count", "1");
 			params.put("information", info);
-			params.put("service", "show_list");
+			params.put("service", "list_user");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
