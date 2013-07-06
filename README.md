@@ -1,4 +1,4 @@
 php-api-test
 ============
 
-Php Api Test with Android.
+Simple api written by php language, test by android with json params and post method.
