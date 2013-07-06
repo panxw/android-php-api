@@ -10,7 +10,7 @@ class PHPApi {
 		$this->information = $jsonObject->information;
 	}
 
-	public function execute() {
+	public function execute() {//execute api according input information
 		$conn = mysql_connect ( "localhost", "s549974db0", "7337zxtz" ) or die ( "error" . mysql_error () ); 
 		mysql_select_db ( "s549974db0", $conn ) or die ( "select db error" );//mysql_query("use s549974db0",$conn);
 		mysql_query ( "set names utf-8" );
@@ -36,7 +36,7 @@ class PHPApi {
 		mysql_close ( $conn );
 	}
 
-	private function list_user($conn ) {
+	private function list_user($conn ) {//get all user
 		$sql = mysql_query ( "select * from user", $conn );
 
 		$row = mysql_fetch_object ( $sql );
@@ -53,7 +53,7 @@ class PHPApi {
 		}
 	}
 
-	private function add_user($conn ) {
+	private function add_user($conn ) {//add new user to database
 		$sql = mysql_query ( "insert into user(username,password,type) values('" . $this->information->username . "','" . $this->information->password . "'," . $this->information->type . ")", $conn );
 		if ($sql) {
 			$this->set_sucess ( $this->service );
@@ -63,7 +63,7 @@ class PHPApi {
 		}
 	}
 
-	private function delete_user($conn ) {
+	private function delete_user($conn ) {//del certain user from database
 		$sql=mysql_query("delete from user where id=".$this->information->id);
 		if ($sql) {
 			$this->set_sucess ( $this->service );
@@ -73,7 +73,7 @@ class PHPApi {
 		}
 	}
 
-	private function update_user($conn ) {
+	private function update_user($conn ) {//update certain user to database
 		$sql=mysql_query("update user set username='".$this->information->username."', type='".$this->information->type."' where id=".$this->information->type);
 		if ($sql) {
 			$this->set_sucess ( $this->service );
@@ -83,7 +83,7 @@ class PHPApi {
 		}
 	}
 
-	private function query_user($conn ) {
+	private function query_user($conn ) {//query user by type
 		$sql=mysql_query("select * from user where type='".$this->information->type."'", $conn);
 		if ($sql) {
 			$this->set_sucess ( $this->service );
@@ -93,17 +93,17 @@ class PHPApi {
 		}
 	}
 
-	private function set_sucess($service) {
+	private function set_sucess($service) {//set result when success
 		$result = array ('service' => $service, 'code' => '00', 'message' => 'ok' );
 		echo json_encode ( $result );
 	}
 
-	private function set_sucess_info($service, $information) {
+	private function set_sucess_info($service, $information) {//set result when success with information
 		$result = array ('service' => $service, 'code' => '00', 'information' => $information );
 		echo json_encode ( $result );
 	}
 
-	private function set_error() {
+	private function set_error() {//set result when failed
 		$error = array ('code' => '-1', 'message' => 'execute error' );
 		echo json_encode ( $error );
 	}
